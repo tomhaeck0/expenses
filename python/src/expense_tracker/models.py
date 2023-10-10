@@ -4,18 +4,24 @@ from django.db import models
 # Create your models here.
 class Organization(models.Model):
 
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return f"{self.name}"
 
 
 class Account(models.Model):
 
-    number = models.CharField(max_length=100)
+    number = models.CharField(max_length=100, unique=True)
     name = models.CharField(max_length=100)
 
     organization = models.ForeignKey(Organization,
                                      on_delete=models.CASCADE,
                                      null=True,
                                      blank=True)
+
+    def __str__(self):
+        return f"{self.number}"
 
 
 class Transfer(models.Model):
