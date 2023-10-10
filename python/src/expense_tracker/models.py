@@ -12,7 +12,10 @@ class Account(models.Model):
     number = models.CharField(max_length=100)
     name = models.CharField(max_length=100)
 
-    organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
+    organization = models.ForeignKey(Organization,
+                                     on_delete=models.CASCADE,
+                                     null=True,
+                                     blank=True)
 
 
 class Transfer(models.Model):
