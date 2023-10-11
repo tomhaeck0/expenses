@@ -31,12 +31,15 @@ class Transfer(models.Model):
 
     reference = models.CharField(max_length=100)
 
-    account_from = models.ForeignKey(Account, on_delete=models.CASCADE, related_name="transfers_from")
-    account_to = models.ForeignKey(Account, on_delete=models.CASCADE, related_name="transfers_to")
+    account = models.ForeignKey(Account, on_delete=models.CASCADE)
+
+    recipient = models.CharField(max_length=100)
 
     amount = models.IntegerField(help_text='in cents',)
     currency = models.CharField(max_length=20, choices=currency_choices)
     date = models.DateField()
     description = models.CharField(max_length=100, choices=type_choices)
+
+
 
     comment = models.TextField()
