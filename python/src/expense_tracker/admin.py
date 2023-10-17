@@ -16,13 +16,13 @@ class AccountAdmin(admin.ModelAdmin):
 @admin.register(Transfer)
 class TransferAdmin(admin.ModelAdmin):
     list_display = ("reference",
+
                     "account",
                     "recipient",
 
                     "amount",
                     "currency",
                     "date",
-                    "description",
 
                     "comment",)
 
