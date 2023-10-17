@@ -22,23 +22,7 @@ def create_graph():
 
 def create_bars(data):
     # Create a Bokeh figure
-
-    p = figure(background_fill_color='gray',
-                 background_fill_alpha=0.5,
-                 border_fill_color='green',
-                 border_fill_alpha=0.25,
-                 # h_symmetry=True,                         This parameter has been deprecated
-                 x_axis_label='X Label',
-                 x_axis_type='datetime',
-                 x_axis_location='above',
-                 x_range=[str(i) for i in range(len(data))],
-                 y_axis_label='Y Label',
-                 y_axis_type='linear',
-                 y_axis_location='left',                    # there is not only label, type, location, but also font, fontsize, color, etc.
-                 title='Example Figure',
-                 title_location='right',
-                 toolbar_location='below',
-                 tools='save')
+    p = figure(x_range=[str(i) for i in range(len(data))], title="Vertical Bar Plot")
 
     # Create vertical bars using vbar
     p.vbar(x=[str(i) for i in range(len(data))], top=data, width=0.5, color="navy")
