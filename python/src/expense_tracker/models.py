@@ -39,45 +39,47 @@ class Transfer(models.Model):
 
     comment = models.TextField()
 
+    def __str__(self):
+        return f"({self.reference}, {self.account}, {self.recipient}, {self.amount}{self.currency}, {self.date}, {self.comment}"
+
     @classmethod
-    def transfers_from_csv(cls, file_path):
+    def transfers_from_csv(cls, text_stream):
 
-        with open(file_path, mode='r') as f:
-            csv_reader = csv.DictReader(f)
+        csv_reader = csv.DictReader(text_stream)
 
-            column_data_types = {
-                'Referentie': str,
-                'Rekening': str,
-                'Naam tegenpartij': str,
-                'Bedrag': float,
-                'Munt': str,
-                'Verrichtingsdatum': str,
-                'Mededeling': str
-            }
+        column_data_types = {
+            'Referentie': str,
+            'Rekening': str,
+            'Naam tegenpartij': str,
+            'Bedrag': float,
+            'Munt': str,
+            'Verrichtingsdatum': str,
+            'Mededeling': str
+        }
 
-            column_names = {
-                'Referentie': 'reference',
-                'Rekening': 'account',
-                'Naam tegenpartij': 'recipient',
-                'Bedrag': 'amount',
-                'Munt': 'currency',
-                'Verrichtingsdatum': 'date',
-                'Mededeling': 'comment'
-            }
+        column_names = {
+            'Referentie': 'reference',
+            'Rekening': 'account',
+            'Naam tegenpartij': 'recipient',
+            'Bedrag': 'amount',
+            'Munt': 'currency',
+            'Verrichtingsdatum': 'date',
+            'Mededeling': 'comment'
+        }
 
-            transfers = []
-            for transfer in csv_reader:
+        transfers = []
+        for transfer in csv_reader:
 
-                transfer_normalized = {column_names[key]: column_data_types[key](value)
-                                       for key, value in transfer.items() if key in column_data_types}
+            transfer_normalized = {column_names[key]: column_data_types[key](value)
+                                   for key, value in transfer.items() if key in column_data_types}
 
-                transfer_normalized['amount'] = int(transfer_normalized['amount'] * 100)
-                transfer_normalized['date'] = datetime.strptime(transfer_normalized['date'], "%d-%m-%Y").date()
-                transfer_normalized['account'] = Account.objects.get(number=transfer_normalized['account'])
+            transfer_normalized['amount'] = int(transfer_normalized['amount'] * 100)
+            transfer_normalized['date'] = datetime.strptime(transfer_normalized['date'], "%d-%m-%Y").date()
+            transfer_normalized['account'] = Account.objects.get(number=transfer_normalized['account'])
 
-                transfers.append(Transfer(**transfer_normalized))
+            transfers.append(Transfer(**transfer_normalized))
 
-            return transfers
+        return transfers
 
 
 def main():

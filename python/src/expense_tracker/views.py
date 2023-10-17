@@ -1,11 +1,17 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
+
+import csv
+from io import TextIOWrapper
 
 from expense_tracker.models import Transfer
 
 from bokeh.io import output_file
 from bokeh.plotting import figure, show
 from bokeh.embed import components
+
+from expense_tracker.forms import TransferUploadForm
+from expense_tracker.models import Transfer
 
 
 def create_graph():
@@ -47,3 +53,26 @@ def view_prototype(request):
     return render(request, 'expense_tracker/bokeh_template.html', {'script': script, 'div': div})
 
 
+def upload_transfers(request):
+    if request.method == 'POST':
+        form = TransferUploadForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            uploaded_file = form.cleaned_data['transfer_file']
+
+            if not uploaded_file.content_type == 'text/csv':
+                raise ValueError('Uploaded file is not a csv file.')
+
+            #import csv
+            with TextIOWrapper(uploaded_file.file, encoding='UTF-8') as csv_file:
+                transfers = Transfer.transfers_from_csv(csv_file)
+
+            for transfer in transfers:
+                print(transfer)
+
+            return HttpResponseRedirect('/success/')
+
+    else:
+        form = TransferUploadForm()
+
+    return render(request, 'expense_tracker/upload_transfers.html', {'form': form})

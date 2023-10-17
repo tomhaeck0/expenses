@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload Bank Transfers</title>
+</head>
+<body>
+
+<h1>Bank Transfer Uploader</h1>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <label for="transfer_file">Choose a file containing bank transfers:</label>
+    <input type="file" id="transfer_file" name="transfer_file">
+    <span><small>Upload a CSV file with bank transfer data.</small></span>
+    <input type="submit" value="Upload">
+</form>
+
+</body>
+</html>
