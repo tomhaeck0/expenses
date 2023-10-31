@@ -10,7 +10,7 @@ class OrganizationAdmin(admin.ModelAdmin):
 
 @admin.register(Account)
 class AccountAdmin(admin.ModelAdmin):
-    list_display = ("number", "name", "organization",)
+    list_display = ("name", "number", "organization",)
 
 
 @admin.register(Transfer)
@@ -21,7 +21,6 @@ class TransferAdmin(admin.ModelAdmin):
                     "recipient",
 
                     "amount",
-                    "currency",
                     "date",
 
                     "comment",)
