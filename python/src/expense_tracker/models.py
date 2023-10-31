@@ -46,7 +46,7 @@ class Transfer(models.Model):
         ('house', 'House'),
         ('hobbies', 'Hobbies'),
     )
-    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, null=True)
 
     def __str__(self):
         return f"({self.reference}, {self.account}, {self.recipient}, {self.amount / 100:.2f}Eur, {self.date}, {self.comment}"
