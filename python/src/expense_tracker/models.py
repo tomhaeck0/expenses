@@ -41,5 +41,12 @@ class Transfer(models.Model):
     date = models.DateField()
     comment = models.TextField()
 
+    CATEGORY_CHOICES = (
+        ('food', 'Food'),
+        ('house', 'House'),
+        ('hobbies', 'Hobbies'),
+    )
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
+
     def __str__(self):
         return f"({self.reference}, {self.account}, {self.recipient}, {self.amount / 100:.2f}Eur, {self.date}, {self.comment}"
